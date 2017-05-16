@@ -9,15 +9,15 @@ default: &default
 
 development:
   <<: *default
-  database: controllers_routes_development
+  database: postman_active_model_serializer_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: controllers_routes_test
+  database: postman_active_model_serializer_test
 
 production:
   <<: *default
-  database: controllers_routes_producton
+  database: postman_active_model_serializer_producton

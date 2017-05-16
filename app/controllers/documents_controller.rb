@@ -1,13 +1,15 @@
 class DocumentsController < ApplicationController
-  before_action :find_document, only: [:show, :comments]
+  before_action :find_document, only: [:show, :comments, :edit, :update, :destroy]
+  #skip_before_action :verify_authenticity_token
 
   def index
     @documents = Document.all
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render xml: @documents}
-      format.json { render json: @documents}
-    end
+    # respond_to do |format|
+    #   format.html # index.html.erb
+    #   format.xml  { render xml: @documents}
+    #   format.json { render json: @documents}
+    # end
+    render json: @documents
   end
 
   def show
@@ -15,7 +17,37 @@ class DocumentsController < ApplicationController
   end
 
   def new
-    render json: {text: :ok}
+    @document = Document.new
+    render json: @document
+  end
+
+  def create
+    @document = Document.new(document_params)
+    if @document.save
+      render json: @document
+    else
+      render json: { text: 'bad request' }
+    end
+  end
+
+  def edit
+    render json: @document
+  end
+
+  def update
+    if @document.update(document_params)
+      render json: @document
+    else
+      render json: { text: 'bad request' }
+    end
+  end
+
+  def destroy
+    if @document.destroy
+      render json: @document
+    else
+      render json: { text: 'bad request' }
+    end
   end
 
   def comments
@@ -23,24 +55,13 @@ class DocumentsController < ApplicationController
     render json: @comments
   end
 
-  def create
-    # params
-    # request
-    # response
-  end
-
-  def edit
-  end
-
-  def update
-  end
-
-  def destroy
-  end
-
   private
 
   def find_document
     @document = Document.find(params[:id])
+  end
+
+  def document_params
+    params.require(:document).permit(:name)
   end
 end
