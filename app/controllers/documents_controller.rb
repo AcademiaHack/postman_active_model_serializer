@@ -1,6 +1,6 @@
 class DocumentsController < ApplicationController
   before_action :find_document, only: [:show, :comments, :edit, :update, :destroy]
-  #skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
 
   def index
     @documents = Document.all
@@ -13,7 +13,7 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    render json: @document
+    render json: { iva: @document.try(:iva), name: @document.try(:name) }
   end
 
   def new
@@ -58,10 +58,10 @@ class DocumentsController < ApplicationController
   private
 
   def find_document
-    @document = Document.find(params[:id])
+    @document = Document.find_by(id: params[:id])
   end
 
   def document_params
-    params.require(:document).permit(:name)
+    params.require(:document).permit(:name, :text)
   end
 end
