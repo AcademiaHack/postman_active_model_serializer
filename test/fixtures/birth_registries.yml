@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  place: MyString
+  registry_date: 2017-04-28
+  person: one
+
+two:
+  place: MyString
+  registry_date: 2017-04-28
+  person: two
