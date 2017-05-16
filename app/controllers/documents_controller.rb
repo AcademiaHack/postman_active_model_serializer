@@ -13,7 +13,7 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    render json: { iva: @document.try(:iva), name: @document.try(:name) }
+    render json: @document
   end
 
   def new
