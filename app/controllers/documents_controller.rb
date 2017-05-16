@@ -50,11 +50,6 @@ class DocumentsController < ApplicationController
     end
   end
 
-  def comments
-    @comments = @document.comments
-    render json: @comments
-  end
-
   private
 
   def find_document

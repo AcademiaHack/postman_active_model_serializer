@@ -12,7 +12,6 @@ class SectionsController < ApplicationController
     else
       @sections = Section.all
     end
-    section
   end
 
   def highlight
