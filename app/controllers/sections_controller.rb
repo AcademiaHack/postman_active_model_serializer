@@ -1,4 +1,5 @@
 class SectionsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:create, :update, :destroy]
 
   def index
     if params.key?(:document_id)
@@ -41,11 +42,12 @@ class SectionsController < ApplicationController
   # {section: {name: "hack", highlight: true }
 
   def create
-    @section = Section.new(section_params)
+    @document = Document.find_by(id: params[:document_id])
+    @section = @document.sections.build(section_params)
     if @section.save
       render json: @section
     else
-      render json: {text: 'bad request'}
+      render json: @section.errors.messages
     end
   end
 

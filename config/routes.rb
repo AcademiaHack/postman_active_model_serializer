@@ -2,31 +2,60 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  get 'documents/:document_id/comments', to: 'comments#index'
-  resources :documents, shallow: true do
-    member do
-      post :comments
-    end
-
-    resources :sections do
-      collection do
-        get :highlight
+  shallow do
+    resources :documents do
+      resources :comments
+      resources :sections do
+        resources :comments, except: [:edit, :show, :update, :destroy]
+        resources :paragraphs do
+          collection do
+            get :highlight
+          end
+          resources :comments, except: [:edit, :show, :update, :destroy]
+        end
       end
     end
   end
 
-  get 'sections/:section_id/comments', to: 'comments#index'
-  resources :sections, only: [:index] do
+  resources :sections, only: [:index, :show] do
     member do
       get :highlight
-      post :comments
     end
-    # get :highlight, on: :member
   end
+  resources :comments, only: [:index, :show]
 
-  #get 'sections/', to: 'sections#index'
-  get 'sections/:id/highlight', to: 'sections#highlight'
 
-  resources :paragraphs
-  #get 'documents/new', to: 'documents#new'
+  # resources :comments, only: [:edit, :update, :show, :destroy] do
+  #   member do
+  #     get :highlight
+  #   end
+  # end
+
+  # resources :documents, shallow: true do
+  #   resources :comments, only: [:index, :create]
+
+  #   resources :sections do
+  #     resources :comments, only: [:index, :create]
+  #     collection do
+  #       get :highlight
+  #     end
+  #   end
+  # end
+
+
+  # resources :sections, only: :index, shallow: true do
+  #   member do
+  #     get :highlight
+  #   end
+  #   resources :paragraphs
+  # end
+
+  # resources :paragraphs, only: [] do
+  #   resources :comments, only: [:index, :create]
+  # end
+  # shallowless
+  # resources :documents do
+  #   resources :sections, only: [:index, :create, :new]
+  # end
+  # resources :sections, only: [:edit, :update, :show, :destroy]
 end
